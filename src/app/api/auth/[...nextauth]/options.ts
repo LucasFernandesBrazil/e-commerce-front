@@ -1,3 +1,4 @@
+import decodeJwtPayload from "@/utils/JWT";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
 
@@ -26,10 +27,14 @@ export const options: NextAuthOptions = {
           headers: { "Content-Type": "application/json" }
         })
         const response = await res.json()
-        console.log("user", response);
+        const decodedToken = decodeJwtPayload(response?.conteudo?.token);
         
         if (res.ok && response) {
-          return response
+          return {
+            ...decodedToken,
+            token: response?.conteudo?.token,
+            expiracao: response?.conteudo?.expiracao
+          }
         }
         return null
       }
