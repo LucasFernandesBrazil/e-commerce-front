@@ -1,5 +1,3 @@
-// pages/api/login.ts
-
 import { withIronSessionApiRoute } from "iron-session/next";
 
 export default withIronSessionApiRoute(
