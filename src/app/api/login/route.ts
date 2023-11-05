@@ -1,7 +1,15 @@
 import { withIronSessionApiRoute } from "iron-session/next";
+import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
+
+export async function POST() {
+  return NextResponse.json({
+    hello: "world",
+  })
+}
 
 export default withIronSessionApiRoute(
-  async function loginRoute(req, res) {
+  async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
     // get user from database then:
     req.session.user = {
       name: "John Doe",
