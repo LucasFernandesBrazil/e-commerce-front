@@ -2,31 +2,33 @@
 
 import { useState } from "react";
 import ButtonLoadComponent from "./ButtonLoadComponent";
+import { signIn } from "next-auth/react";
+import toastEmmiter from "@/utils/toastEmitter";
+import { EToastType } from "@/interfaces/toast.interface";
+import { useRouter } from "next/navigation";
+
 
 export default function AuthenticateFormComponent() {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   function handleLogin(event: any) {
     event.preventDefault();
     setIsLoading(true);
-  
-    fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username: 'seuUsuario', password: 'suaSenha' }),
-    })
-    .then(data => {
-      console.log(data);
+    
+    signIn("credentials", { redirect: false, email: event.target.email.value, password: event.target.password.value }).then((response) => {
+      if(response?.error) {
+        toastEmmiter("Credenciais inválidas.", EToastType.ERROR);
+      } else {
+        router.push('/');
+      }
       setIsLoading(false);
-    })
-    .catch(error => {
-      console.error('Erro ao fazer login:', error);
+    }).catch((e) => {
+      console.log('error', e);
+      toastEmmiter("Ocorreu um erro desconhecido. ", EToastType.ERROR);
       setIsLoading(false);
     });
   }
-  
 
   return (
     <form className="space-y-6" onSubmit={handleLogin}>
