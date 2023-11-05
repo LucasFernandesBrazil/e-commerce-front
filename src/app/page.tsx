@@ -1,16 +1,9 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { getRequestCookie } from "./lib/getRequestCookie";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export default async function Home() {
-  console.log("Entering TenantLayout boundary");
-  const user = await getRequestCookie(cookies());
-
-  // Prevent non logged user to acces all pages in the tenant layout tree
-  if (!user) {
-    redirect("/login");
-  }
-
+  const session = await getServerSession(authOptions)
+  
   return (
     <>
       // header component
