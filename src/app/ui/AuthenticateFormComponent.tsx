@@ -17,7 +17,6 @@ export default function AuthenticateFormComponent() {
       },
       body: JSON.stringify({ username: 'seuUsuario', password: 'suaSenha' }),
     })
-    .then(response => response.json())
     .then(data => {
       console.log(data);
       setIsLoading(false);
