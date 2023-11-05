@@ -6,6 +6,8 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 import Provider from "./context/client.provider";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import FooterComponent from "./ui/FooterComponent";
+import NavBarComponent from "./ui/NavBarComponent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +27,9 @@ export default async function RootLayout({
     <html className="h-full bg-white" lang="pt-BR">
       <body className={`h-full ${inter.className}`}>
         <Provider session={session}>
+          <NavBarComponent />
           {children}
+          <FooterComponent />
           <ToastContainer />
         </Provider>
       </body>

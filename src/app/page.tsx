@@ -1,14 +1,19 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+'use client'
 
-export default async function Home() {
-  const session = await getServerSession(authOptions)
-  
+import HeroSection from "./ui/HeroSection"
+import PerksSection from "./ui/PerksSection"
+import TrendingSection from "./ui/TrendingSection"
+
+export default function Home() {
   return (
-    <>
-      // header component
-      <h1>Home</h1>
-      // footer component
-    </>
-  );
+    <div className="bg-white">
+      <main>
+        <HeroSection />
+
+        <TrendingSection />
+
+        <PerksSection />
+      </main>
+    </div>
+  )
 }
