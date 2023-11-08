@@ -1,43 +1,34 @@
-const trendingProducts = [
-  {
-    id: 1,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  },
-  {
-    id: 2,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  },
-  {
-    id: 3,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  },
-  {
-    id: 4,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  },
-]
+'use client'
+
+import { IProducts } from "@/interfaces/products.interface"
+import { formatCurrency } from "@/utils/formatCurrency";
+import { useEffect, useState } from "react";
 
 export default function TrendingSection() {
+  const [products, setProducts] = useState<IProducts[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const responseProducts = await fetch('/api/products', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const products = await responseProducts.json();
+        
+        setProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const firstFourProducts = products.slice(0, 4);
+
   return (
     <section aria-labelledby="trending-heading">
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:pt-32">
@@ -52,23 +43,23 @@ export default function TrendingSection() {
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
-          {trendingProducts.map((product) => (
+          {firstFourProducts.map((product) => (
             <div key={product.id} className="group relative">
               <div className="h-56 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:h-72 xl:h-80">
                 <img
-                  src={product.imageSrc}
-                  alt={product.imageAlt}
+                  src={product.imagem}
+                  alt={product.nome}
                   className="h-full w-full object-cover object-center"
                 />
               </div>
               <h3 className="mt-4 text-sm text-gray-700">
-                <a href={product.href}>
+                <a href={'/products/' + product.id.toString()}>
                   <span className="absolute inset-0" />
-                  {product.name}
+                  {product.nome}
                 </a>
               </h3>
-              <p className="mt-1 text-sm text-gray-500">{product.color}</p>
-              <p className="mt-1 text-sm font-medium text-gray-900">{product.price}</p>
+              {/* <p className="mt-1 text-sm text-gray-500">{product.color}</p> */}
+              <p className="mt-1 text-sm font-medium text-gray-900">{formatCurrency(product.preco)}</p>
             </div>
           ))}
         </div>
