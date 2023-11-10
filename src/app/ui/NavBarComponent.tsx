@@ -180,12 +180,12 @@ export default function NavBarComponent() {
 
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                   <div className="flow-root">
-                    <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
+                    <a href="/login" className="-m-2 block p-2 font-medium text-gray-900">
                       Criar conta
                     </a>
                   </div>
                   <div className="flow-root">
-                    <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
+                    <a href="/login" className="-m-2 block p-2 font-medium text-gray-900">
                       Entrar
                     </a>
                   </div>
@@ -209,10 +209,10 @@ export default function NavBarComponent() {
               </p>
 
               <div className="flex items-center space-x-6 hidden sm:block">
-                <a href="#" className="text-sm font-medium text-white hover:text-gray-100">
+                <a href="/login" className="text-sm font-medium text-white hover:text-gray-100">
                   Entrar
                 </a>
-                <a href="#" className="text-sm font-medium text-white hover:text-gray-100">
+                <a href="/login" className="text-sm font-medium text-white hover:text-gray-100">
                   Criar conta
                 </a>
               </div>
