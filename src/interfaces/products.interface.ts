@@ -5,6 +5,12 @@ export interface IProducts {
   imagem: string;
 }
 
+export interface IProductCheckout {
+  productDetail: IProducts,
+  color: string,
+  quantity: number
+}
+
 export interface IProductDetail {
   id: number;
   nome: string;

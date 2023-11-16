@@ -4,7 +4,11 @@ import { IProducts } from "@/interfaces/products.interface"
 import { formatCurrency } from "@/utils/formatCurrency";
 import { useEffect, useState } from "react";
 
-export default function TrendingSection() {
+interface TrendingSectionProps {
+  title?: string;
+}
+
+export default function TrendingSection({ title = "Novidades" }: TrendingSectionProps) {
   const [products, setProducts] = useState<IProducts[]>([]);
 
   useEffect(() => {
@@ -34,7 +38,7 @@ export default function TrendingSection() {
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:pt-32">
         <div className="md:flex md:items-center md:justify-between">
           <h2 id="favorites-heading" className="text-2xl font-bold tracking-tight text-gray-900">
-            Novidades
+            { title }
           </h2>
           <a href="#" className="hidden text-sm font-medium text-sky-600 hover:text-sky-500 md:block">
             Veja mais produtos
