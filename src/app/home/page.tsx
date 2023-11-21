@@ -5,7 +5,7 @@ import React, { useState } from "react"
 
 export default function ClientSideRoot (): any {
   const { data: session } = useSession()
-
+  
   const [shown, setShown] = useState<boolean>(false)
   const clickHandler = (): void => {
     setShown(!shown)

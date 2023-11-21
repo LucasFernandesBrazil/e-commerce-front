@@ -2,7 +2,7 @@ export async function GET(
   request: Request,
   { params }: { params: { productId: string } }
 ) {
-  const response = await fetch(`http://localhost:5129/api/produtos/${encodeURI(params.productId)}`, {
+  const response = await fetch(`${process.env.API_URL}/produtos/${encodeURI(params.productId)}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

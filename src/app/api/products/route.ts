@@ -1,5 +1,5 @@
 export async function GET(){
-  const response = await fetch(`http://localhost:5129/api/produtos`, {
+  const response = await fetch(`${process.env.API_URL}/produtos`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -10,6 +10,7 @@ import {
   SparklesIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
+import { getCartNumber } from '../services/shoppingCart.service'
 
 const navigation = {
   categories: [
@@ -85,6 +86,19 @@ export default function NavBarComponent() {
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
   }
+
+  useEffect(() => {
+    const fetchNumbercart = async () => {
+      try {
+        const numberCart = await getCartNumber()
+        console.log(numberCart)
+      } catch (error) {
+        console.error("Error fetching productDetail:", error);
+      }
+    };
+
+    fetchNumbercart();
+  }, [])
 
   return (
     <>
@@ -225,7 +239,7 @@ export default function NavBarComponent() {
               <div className="flex h-16 items-center justify-between">
                 {/* Logo (lg+) */}
                 <div className="hidden lg:flex lg:flex-1 lg:items-center">
-                  <a href="#">
+                  <a href="/">
                     <span className="sr-only">Roupa online</span>
                     <img
                       className="h-10 w-auto"

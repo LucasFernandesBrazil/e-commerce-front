@@ -32,8 +32,9 @@ export const authOptions: AuthOptions = {
         console.info('Login status code: ', res.status);
         if (res.status === 200) {
           const response = await res.json()
-          const decodedToken = decodeJwtPayload(response?.conteudo?.token);
-          return { ...decodedToken, id: decodedToken.email }
+          
+          return response?.conteudo;
+          //return { token: response?.conteudo?.token, id: decodedToken.email, name: decodedToken.name, email: decodedToken.email, accessToken: response?.conteudo?.token }
         } else {
           return null
         }
@@ -56,12 +57,15 @@ export const authOptions: AuthOptions = {
       return baseUrl
     },
     async session({ session, user, token }) {
+      const decodedToken = decodeJwtPayload(token.token as string);
+      session.user = { ...decodedToken, accessToken: token.token }
       return session
     },
     async jwt({ token, user, account, profile, isNewUser }) {
-      return token
+      return { ...token, ...user };
     }
   },
+  secret: process.env.SECRET,
   session: { strategy: "jwt" }
 }
 

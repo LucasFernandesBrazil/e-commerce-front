@@ -4,9 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 
 export default async function Protected (req: NextRequest): Promise<any> {
   const session = await getServerSession(authOptions)
-  console.log('session', session);
   
-
   return (
     <div className='grid grid-cols-2 text-black p-4'>
       <div>
