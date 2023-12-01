@@ -6,6 +6,8 @@ import { CurrencyDollarIcon, GlobeAmericasIcon } from '@heroicons/react/24/outli
 import { IImage, IProductDetail } from '@/interfaces/products.interface'
 import { formatCurrency } from '@/utils/formatCurrency'
 import { addToCart } from '@/app/services/shoppingCart.service'
+import toastEmmiter from '@/utils/toastEmitter'
+import { EToastType } from '@/interfaces/toast.interface'
 
 const product = {
   name: 'Camisa básica',
@@ -142,7 +144,15 @@ export default function ProductName({ params }: ProductNameProps) {
 
   async function handleAddToCart() {
     setIsLoading(true);
-    const response = await addToCart(productDetail?.itens[1].cores[0].id || 0, 1);
+    const res = await addToCart(productDetail?.itens[1].cores[0].id || 0, 1);
+    const mensagens: string[] | null  = res?.mensagens;
+    if (mensagens && mensagens.length > 0) {
+      mensagens?.forEach(mensagem => {
+        toastEmmiter(mensagem, EToastType.ERROR);
+      });
+    } else {
+      toastEmmiter('Produto adicionado ao carrinho!', EToastType.SUCESS);
+    }
     setIsLoading(false);
   }
 
