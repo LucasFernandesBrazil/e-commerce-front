@@ -1,5 +1,5 @@
-export async function addToCart(itemId: number, quantidade: number) {
-  const response = await fetch('/api/products/', {
+export async function addToCart(itemId: number, quantidade: number) {  
+  const response = await fetch('/api/shopping/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

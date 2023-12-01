@@ -142,9 +142,8 @@ export default function ProductName({ params }: ProductNameProps) {
 
   async function handleAddToCart() {
     setIsLoading(true);
-    const response = await addToCart(productDetail?.id || 0, 1);
+    const response = await addToCart(productDetail?.itens[1].cores[0].id || 0, 1);
     setIsLoading(false);
-    console.log(response);
   }
 
   return (
@@ -209,7 +208,6 @@ export default function ProductName({ params }: ProductNameProps) {
             </div>
 
             <div className="mt-8 lg:col-span-5">
-              <form>
                 {/* Color picker */}
                 <div>
                   <h2 className="text-sm font-medium text-gray-900">Cor</h2>
@@ -279,7 +277,7 @@ export default function ProductName({ params }: ProductNameProps) {
                 </div>
 
                 <button
-                  type="submit"
+                  onClick={handleAddToCart}
                   className="mt-8 flex w-full items-center justify-center rounded-md border border-transparent bg-sky-600 px-8 py-3 text-base font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
                 >
                   {isLoading && (
@@ -290,7 +288,6 @@ export default function ProductName({ params }: ProductNameProps) {
                   )}
                   Adicionar ao carrinho
                 </button>
-              </form>
 
               {/* Product details */}
               <div className="mt-10">
