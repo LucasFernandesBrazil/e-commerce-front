@@ -1,11 +1,19 @@
 'use client'
 
-import { CheckIcon, ClockIcon, QuestionMarkCircleIcon, XMarkIcon as XMarkIconMini } from '@heroicons/react/20/solid'
+import { XMarkIcon as XMarkIconMini } from '@heroicons/react/20/solid'
 import TrendingSection from '../ui/TrendingSection'
 import { formatCurrency } from '@/utils/formatCurrency'
 import { useEffect, useState } from 'react'
-import { getCartNumber } from '../services/shoppingCart.service'
+import { changeNumberItemCart, deleteItem, getCartInfo } from '../services/shoppingCart.service'
 import { ICart } from '@/interfaces/products.interface'
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import toastEmmiter from '@/utils/toastEmitter'
+import { EToastType } from '@/interfaces/toast.interface'
 
 const products = [
   {
@@ -52,11 +60,13 @@ const payResume = {
 
 export default function ShoppingCartPage() {
   const [cart, setCart] = useState<ICart>()
-  
+  const [open, setOpen] = useState(false);
+  const [idProductRemove, setIdProductRemove] = useState<number>()
+
   useEffect(() => {
     const fetchNumbercart = async () => {
       try {
-        const cart = await getCartNumber()
+        const cart = await getCartInfo()
         setCart(cart)
         console.log(cart)
       } catch (error) {
@@ -66,6 +76,29 @@ export default function ShoppingCartPage() {
 
     fetchNumbercart();
   }, [])
+
+  function handleClickOpen(id: number) {
+    setIdProductRemove(id)
+    setOpen(true);
+  };
+
+  function handleClose() {
+    setOpen(false);
+    setIdProductRemove(undefined)
+  };
+
+  function changeQuantity(quantidade: string, id: number) {
+    changeNumberItemCart(id, Number(quantidade));
+  }
+
+  function deleteItemOfCart() {
+    if(!idProductRemove) return
+    deleteItem(idProductRemove);
+    setIdProductRemove(undefined);
+    toastEmmiter('Produto removido do carrinho', EToastType.SUCESS)
+    cart?.itens.splice(cart?.itens.findIndex(item => item.id === idProductRemove), 1)
+    setOpen(false);
+  }
 
   return (
     <div className="bg-white">
@@ -115,6 +148,8 @@ export default function ShoppingCartPage() {
                         <select
                           id={`quantity-${productIdx}`}
                           name={`quantity-${productIdx}`}
+                          onChange={(value) => changeQuantity(value?.target?.value, product.id)}
+                          defaultValue={product.quantidade}
                           className="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                         >
                           <option value={1}>1</option>
@@ -128,7 +163,7 @@ export default function ShoppingCartPage() {
                         </select>
 
                         <div className="absolute right-0 top-0">
-                          <button type="button" className="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
+                          <button onClick={() => handleClickOpen(product.id)} type="button" className="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
                             <span className="sr-only">Remove</span>
                             <XMarkIconMini className="h-5 w-5" aria-hidden="true" />
                           </button>
@@ -169,6 +204,27 @@ export default function ShoppingCartPage() {
         </form>
 
         <TrendingSection title='Talvez você também goste' />
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Remover produto do carrinho"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Você tem certeza que deseja remover este produto do carrinho?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancelar</Button>
+            <Button onClick={deleteItemOfCart} autoFocus>
+              Remover
+            </Button>
+          </DialogActions>
+        </Dialog>
       </main>
     </div>
   )
