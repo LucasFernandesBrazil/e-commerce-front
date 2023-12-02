@@ -11,6 +11,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { getCartNumber } from '../services/shoppingCart.service'
+import { useSession } from 'next-auth/react'
 
 const navigation = {
   categories: [
@@ -83,6 +84,7 @@ const navigation = {
 export default function NavBarComponent() {
   const [open, setOpen] = useState(false)
   const [itemsCart, setItemsCart] = useState([])
+  const { data: session } = useSession()
 
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -195,16 +197,26 @@ export default function NavBarComponent() {
                 </div>
 
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  <div className="flow-root">
-                    <a href="/signup" className="-m-2 block p-2 font-medium text-gray-900">
-                      Criar conta
+                  {
+                  session ? (
+                    <a href="/profile" className="text-sm font-medium text-white hover:text-gray-100">
+                      {session?.user?.name}
                     </a>
-                  </div>
-                  <div className="flow-root">
-                    <a href="/login" className="-m-2 block p-2 font-medium text-gray-900">
-                      Entrar
-                    </a>
-                  </div>
+                  ) : (
+                    <>
+                      <div className="flow-root">
+                        <a href="/signup" className="-m-2 block p-2 font-medium text-gray-900">
+                          Criar conta
+                        </a>
+                      </div>
+                      <div className="flow-root">
+                        <a href="/login" className="-m-2 block p-2 font-medium text-gray-900">
+                          Entrar
+                        </a>
+                      </div>
+                    </>
+                  )
+                }
                 </div>
 
               </Dialog.Panel>
@@ -225,12 +237,22 @@ export default function NavBarComponent() {
               </p>
 
               <div className="flex items-center space-x-6 hidden sm:block">
-                <a href="/login" className="text-sm font-medium text-white hover:text-gray-100">
-                  Entrar
-                </a>
-                <a href="/signup" className="text-sm font-medium text-white hover:text-gray-100">
-                  Criar conta
-                </a>
+                {
+                  session ? (
+                    <a href="/profile" className="text-sm font-medium text-white hover:text-gray-100">
+                      {session?.user?.name}
+                    </a>
+                  ) : (
+                    <>
+                      <a href="/signup" className="text-sm font-medium text-white hover:text-gray-100">
+                        Criar conta
+                      </a>
+                      <a href="/login" className="text-sm font-medium text-white hover:text-gray-100">
+                        Entrar
+                      </a>
+                    </>
+                  )
+                }
               </div>
             </div>
           </div>
