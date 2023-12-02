@@ -1,6 +1,11 @@
+'use client'
+
 import { CheckIcon, ClockIcon, QuestionMarkCircleIcon, XMarkIcon as XMarkIconMini } from '@heroicons/react/20/solid'
 import TrendingSection from '../ui/TrendingSection'
 import { formatCurrency } from '@/utils/formatCurrency'
+import { useEffect, useState } from 'react'
+import { getCartNumber } from '../services/shoppingCart.service'
+import { ICart } from '@/interfaces/products.interface'
 
 const products = [
   {
@@ -46,6 +51,21 @@ const payResume = {
 }
 
 export default function ShoppingCartPage() {
+  const [cart, setCart] = useState<ICart>()
+  
+  useEffect(() => {
+    const fetchNumbercart = async () => {
+      try {
+        const cart = await getCartNumber()
+        setCart(cart)
+        console.log(cart)
+      } catch (error) {
+        console.error("Error fetching productDetail:", error);
+      }
+    };
+
+    fetchNumbercart();
+  }, [])
 
   return (
     <div className="bg-white">
@@ -55,16 +75,16 @@ export default function ShoppingCartPage() {
         <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
           <section aria-labelledby="cart-heading" className="lg:col-span-7">
             <h2 id="cart-heading" className="sr-only">
-              Items in your shopping cart
+              Itens em seu carrinho de compras
             </h2>
 
             <ul role="list" className="divide-y divide-gray-200 border-b border-t border-gray-200">
-              {products.map((product, productIdx) => (
+              {cart?.itens.map((product, productIdx) => (
                 <li key={product.id} className="flex py-6 sm:py-10">
                   <div className="flex-shrink-0">
                     <img
-                      src={product.imageSrc}
-                      alt={product.imageAlt}
+                      src={product.imagem}
+                      alt={product.nome}
                       className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
                     />
                   </div>
@@ -74,23 +94,23 @@ export default function ShoppingCartPage() {
                       <div>
                         <div className="flex justify-between">
                           <h3 className="text-sm">
-                            <a href={product.href} className="font-medium text-gray-700 hover:text-gray-800">
-                              {product.name}
+                            <a href={`products/${product.id}`} className="font-medium text-gray-700 hover:text-gray-800">
+                              {product.nome}
                             </a>
                           </h3>
                         </div>
                         <div className="mt-1 flex text-sm">
-                          <p className="text-gray-500">{product.color}</p>
-                          {product.size ? (
-                            <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">{product.size}</p>
+                          <p className="text-gray-500">{product.cor.nome}</p>
+                          {product.tamanho ? (
+                            <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">{product.tamanho}</p>
                           ) : null}
                         </div>
-                        <p className="mt-1 text-sm font-medium text-gray-900">{product.price}</p>
+                        <p className="mt-1 text-sm font-medium text-gray-900">{formatCurrency(product.precoTotal)}</p>
                       </div>
 
                       <div className="mt-4 sm:mt-0 sm:pr-9">
                         <label htmlFor={`quantity-${productIdx}`} className="sr-only">
-                          Quantity, {product.name}
+                          Quantity, {product.nome}
                         </label>
                         <select
                           id={`quantity-${productIdx}`}
@@ -115,16 +135,6 @@ export default function ShoppingCartPage() {
                         </div>
                       </div>
                     </div>
-
-                    <p className="mt-4 flex space-x-2 text-sm text-gray-700">
-                      {product.inStock ? (
-                        <CheckIcon className="h-5 w-5 flex-shrink-0 text-green-500" aria-hidden="true" />
-                      ) : (
-                        <ClockIcon className="h-5 w-5 flex-shrink-0 text-gray-300" aria-hidden="true" />
-                      )}
-
-                      <span>{product.inStock ? 'In stock' : `Ships in ${product.leadTime}`}</span>
-                    </p>
                   </div>
                 </li>
               ))}
@@ -141,33 +151,9 @@ export default function ShoppingCartPage() {
             </h2>
 
             <dl className="mt-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <dt className="text-sm text-gray-600">Sub total</dt>
-                <dd className="text-sm font-medium text-gray-900">{formatCurrency(payResume.subtotal)}</dd>
-              </div>
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <dt className="flex items-center text-sm text-gray-600">
-                  <span>Estimativa de envio</span>
-                  <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Saiba mais sobre como o envio é calculado</span>
-                    <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
-                  </a>
-                </dt>
-                <dd className="text-sm font-medium text-gray-900">{formatCurrency(payResume.shipping)}</dd>
-              </div>
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <dt className="flex text-sm text-gray-600">
-                  <span>Estimativa tributária</span>
-                  <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Saiba mais sobre como o imposto é calculado</span>
-                    <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
-                  </a>
-                </dt>
-                <dd className="text-sm font-medium text-gray-900">{formatCurrency(payResume.tax)}</dd>
-              </div>
               <div className="flex items-center justify-between border-t border-gray-200 pt-4">
                 <dt className="text-base font-medium text-gray-900">Total de pedidos</dt>
-                <dd className="text-base font-medium text-gray-900">{formatCurrency(payResume.total)}</dd>
+                <dd className="text-base font-medium text-gray-900">{formatCurrency(cart?.precoTotal)}</dd>
               </div>
             </dl>
 

@@ -38,3 +38,24 @@ export interface IColor {
   quantidadeEstoque: number;
   estaDisponivel: boolean;
 }
+
+export interface IColorCompact {
+  nome: string;
+  codigo: string;
+}
+
+export interface IProductShipping {
+  id: number;
+  nome: string;
+  precoTotal: number;
+  precoUnitario: number;
+  quantidade: number;
+  tamanho: string;
+  imagem: string;
+  cor: IColorCompact;
+}
+
+export interface ICart {
+  itens: IProductShipping[];
+  precoTotal: number;
+}
