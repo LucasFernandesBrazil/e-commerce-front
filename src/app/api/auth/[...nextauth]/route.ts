@@ -34,7 +34,6 @@ export const authOptions: AuthOptions = {
           const response = await res.json()
           
           return response?.conteudo;
-          //return { token: response?.conteudo?.token, id: decodedToken.email, name: decodedToken.name, email: decodedToken.email, accessToken: response?.conteudo?.token }
         } else {
           return null
         }
