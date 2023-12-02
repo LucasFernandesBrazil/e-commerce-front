@@ -64,18 +64,17 @@ export default function ShoppingCartPage() {
   const [idProductRemove, setIdProductRemove] = useState<number>()
 
   useEffect(() => {
-    const fetchNumbercart = async () => {
-      try {
-        const cart = await getCartInfo()
-        setCart(cart)
-        console.log(cart)
-      } catch (error) {
-        console.error("Error fetching productDetail:", error);
-      }
-    };
-
-    fetchNumbercart();
+    fetchCart();
   }, [])
+
+  async function fetchCart() {
+    try {
+      const cart = await getCartInfo()
+      setCart(cart)
+    } catch (error) {
+      console.error("Error fetching productDetail:", error);
+    }
+  };
 
   function handleClickOpen(id: number) {
     setIdProductRemove(id)
@@ -87,8 +86,9 @@ export default function ShoppingCartPage() {
     setIdProductRemove(undefined)
   };
 
-  function changeQuantity(quantidade: string, id: number) {
-    changeNumberItemCart(id, Number(quantidade));
+  async function changeQuantity(quantidade: string, id: number) {
+    await changeNumberItemCart(id, Number(quantidade));
+    fetchCart();
   }
 
   function deleteItemOfCart() {
