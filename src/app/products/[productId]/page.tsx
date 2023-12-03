@@ -8,6 +8,7 @@ import { formatCurrency } from '@/utils/formatCurrency'
 import { addToCart } from '@/app/services/shoppingCart.service'
 import toastEmmiter from '@/utils/toastEmitter'
 import { EToastType } from '@/interfaces/toast.interface'
+import Image from 'next/image'
 
 const product = {
   name: 'Camisa básica',
@@ -138,9 +139,9 @@ export default function ProductName({ params }: ProductNameProps) {
         console.error("Error fetching productDetail:", error);
       }
     };
-
+  
     fetchProducts();
-  }, []);
+  }, [params.productId]);
 
   async function handleAddToCart() {
     setIsLoading(true);
@@ -204,10 +205,12 @@ export default function ProductName({ params }: ProductNameProps) {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
                 {productDetail?.imagens.map((image: IImage) => (
-                  <img
+                  <Image
                     key={image.ordem}
                     src={image.urlImagem}
                     alt={productDetail.nome}
+                    width={2000}
+                    height={2000}
                     className={classNames(
                       image.ordem === 1 ? 'lg:col-span-2 lg:row-span-2' : 'hidden lg:block',
                       'rounded-lg'

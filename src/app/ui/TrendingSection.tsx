@@ -2,6 +2,7 @@
 
 import { IProducts } from "@/interfaces/products.interface"
 import { formatCurrency } from "@/utils/formatCurrency";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface TrendingSectionProps {
@@ -50,9 +51,11 @@ export default function TrendingSection({ title = "Novidades" }: TrendingSection
           {firstFourProducts.map((product) => (
             <div key={product.id} className="group relative">
               <div className="h-56 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:h-72 xl:h-80">
-                <img
+                <Image
                   src={product.imagem}
                   alt={product.nome}
+                  width={400}
+                  height={400}
                   className="h-full w-full object-cover object-center"
                 />
               </div>

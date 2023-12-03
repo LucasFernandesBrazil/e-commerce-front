@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const perks = [
   {
     name: 'Devoluções Gratuitas',
@@ -38,7 +40,7 @@ export default function PerksSection() {
             >
               <div className="md:flex-shrink-0">
                 <div className="flow-root">
-                  <img className="-my-1 mx-auto h-24 w-auto" src={perk.imageUrl} alt="" />
+                  <Image className="-my-1 mx-auto h-24 w-auto" src={perk.imageUrl} alt="Image" width={700} height={700} />
                 </div>
               </div>
               <div className="mt-6 md:ml-4 md:mt-0 lg:ml-0 lg:mt-6">

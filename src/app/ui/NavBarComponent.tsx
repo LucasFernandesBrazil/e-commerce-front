@@ -12,6 +12,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { getCartNumber } from '../services/shoppingCart.service'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 
 const navigation = {
   categories: [
@@ -94,8 +95,7 @@ export default function NavBarComponent() {
     const fetchNumbercart = async () => {
       try {
         const numberCart = await getCartNumber()
-        setNumberCart(numberCart)
-        console.log(numberCart)
+        if(!numberCart?.status) setNumberCart(numberCart)
       } catch (error) {
         console.error("Error fetching productDetail:", error);
       }
@@ -169,7 +169,7 @@ export default function NavBarComponent() {
                           {category.featured.map((item) => (
                             <div key={item.name} className="group relative">
                               <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-md bg-gray-100 group-hover:opacity-75">
-                                <img src={item.imageSrc} alt={item.imageAlt} className="object-cover object-center" />
+                                <Image width={700} height={700} src={item.imageSrc} alt={item.imageAlt} className="object-cover object-center" />
                               </div>
                               <a href={item.href} className="mt-6 block text-sm font-medium text-gray-900">
                                 <span className="absolute inset-0 z-10" aria-hidden="true" />
@@ -265,10 +265,12 @@ export default function NavBarComponent() {
                 <div className="hidden lg:flex lg:flex-1 lg:items-center">
                   <a href="/">
                     <span className="sr-only">Roupa online</span>
-                    <img
+                    <Image
                       className="h-10 w-auto"
                       src="/logo-black.svg"
-                      alt=""
+                      alt="Logo"
+                      width={40}
+                      height={40}
                     />
                   </a>
                 </div>
@@ -330,9 +332,11 @@ export default function NavBarComponent() {
                                         {category.featured.map((item) => (
                                           <div key={item.name} className="group relative">
                                             <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-md bg-gray-100 group-hover:opacity-75">
-                                              <img
+                                              <Image
                                                 src={item.imageSrc}
                                                 alt={item.imageAlt}
+                                                width={700}
+                                                height={700}
                                                 className="object-cover object-center"
                                               />
                                             </div>
@@ -389,9 +393,11 @@ export default function NavBarComponent() {
                 {/* Logo (lg-) */}
                 <a href="/" className="lg:hidden">
                   <span className="sr-only">Roupas Online</span>
-                  <img
+                  <Image
                     src="/logo-black.svg"
-                    alt=""
+                    alt="Logo"
+                    width={40}
+                    height={40}
                     className="h-10 w-auto"
                   />
                 </a>

@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const collections = [
   {
     name: "Mulheres",
@@ -26,9 +28,11 @@ export default function HeroSection() {
       <div aria-hidden="true" className="absolute inset-0 hidden sm:flex sm:flex-col">
         <div className="relative w-full flex-1 bg-gray-800">
           <div className="absolute inset-0 overflow-hidden">
-            <img
+            <Image
               src="https://tailwindui.com/img/ecommerce-images/home-page-04-hero-full-width.jpg"
-              alt=""
+              alt="Imagem coleção"
+              width={1000}
+              height={1000}
               className="h-full w-full object-cover object-center"
             />
           </div>
@@ -42,9 +46,11 @@ export default function HeroSection() {
         <div aria-hidden="true" className="absolute inset-0 flex flex-col sm:hidden">
           <div className="relative w-full flex-1 bg-gray-800">
             <div className="absolute inset-0 overflow-hidden">
-              <img
+              <Image
                 src="https://tailwindui.com/img/ecommerce-images/home-page-04-hero-full-width.jpg"
-                alt=""
+                alt="Imagem coleção"
+                width={1000}
+                height={1000}
                 className="h-full w-full object-cover object-center"
               />
             </div>
@@ -78,9 +84,11 @@ export default function HeroSection() {
               <div>
                 <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-lg">
                   <div className="absolute inset-0 overflow-hidden group-hover:opacity-75">
-                    <img
+                    <Image
                       src={collection.imageSrc}
                       alt={collection.imageAlt}
+                      width={400}
+                      height={400}
                       className="h-full w-full object-cover object-center"
                     />
                   </div>

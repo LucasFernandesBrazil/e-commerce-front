@@ -14,6 +14,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import toastEmmiter from '@/utils/toastEmitter'
 import { EToastType } from '@/interfaces/toast.interface'
+import Image from 'next/image'
 
 const products = [
   {
@@ -115,10 +116,12 @@ export default function ShoppingCartPage() {
               {cart?.itens.map((product, productIdx) => (
                 <li key={product.id} className="flex py-6 sm:py-10">
                   <div className="flex-shrink-0">
-                    <img
+                    <Image
                       src={product.imagem}
                       alt={product.nome}
                       className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
+                      width={192}
+                      height={192}
                     />
                   </div>
 

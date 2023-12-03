@@ -22,6 +22,9 @@ export default async function ProfilePage() {
                 </div>
               </dl>
             </div>
+            <div>
+              <a className="mt-10 w-full bg-gray-800 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 sm:w-auto" href='/api/auth/signout'>Sair</a>
+            </div>
           </div>
         </div>
       </div>
