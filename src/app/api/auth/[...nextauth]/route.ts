@@ -22,7 +22,6 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
-        console.log(`Fazendo login em ${process.env.API_URL}`)
         const res = await fetch(`${process.env.API_URL}/usuarios/login`, {
           method: 'POST',
           body: JSON.stringify({
