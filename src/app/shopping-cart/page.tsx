@@ -15,6 +15,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import toastEmmiter from '@/utils/toastEmitter'
 import { EToastType } from '@/interfaces/toast.interface'
 import Image from 'next/image'
+import { sendRequest } from '../services/requests.service'
 
 const products = [
   {
@@ -51,13 +52,6 @@ const products = [
     imageAlt: 'Insulated bottle with white base and black snap lid.',
   },
 ]
-
-const payResume = {
-  subtotal: 99.00,
-  shipping: 5.00,
-  tax: 8.32,
-  total: 112.32
-}
 
 export default function ShoppingCartPage() {
   const [cart, setCart] = useState<ICart>()
@@ -101,12 +95,23 @@ export default function ShoppingCartPage() {
     setOpen(false);
   }
 
+  async function handleRequest() {
+    try{
+      await sendRequest()
+      fetchCart();
+      setCart(undefined)
+      toastEmmiter('Pedido realizado com sucesso', EToastType.SUCESS)
+    } catch (error) {
+      toastEmmiter('Erro ao realizar pedido', EToastType.ERROR)
+    }
+  }
+
   return (
     <div className="bg-white">
       <main className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
         <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Seu carrinho</h1>
 
-        <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+        <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
           <section aria-labelledby="cart-heading" className="lg:col-span-7">
             <h2 id="cart-heading" className="sr-only">
               Itens em seu carrinho de compras
@@ -197,14 +202,14 @@ export default function ShoppingCartPage() {
 
             <div className="mt-6">
               <button
-                type="submit"
+                onClick={handleRequest}
                 className="w-full rounded-md border border-transparent bg-sky-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-gray-50"
               >
-                Realizar pagamento
+                Realizar pedido
               </button>
             </div>
           </section>
-        </form>
+        </div>
 
         <TrendingSection title='Talvez você também goste' />
         <Dialog

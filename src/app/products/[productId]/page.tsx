@@ -204,7 +204,7 @@ export default function ProductName({ params }: ProductNameProps) {
               <h2 className="sr-only">Images</h2>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
-                {productDetail?.imagens.map((image: IImage) => (
+                {productDetail?.imagens?.map((image: IImage) => (
                   <Image
                     key={image.ordem}
                     src={image.urlImagem}
@@ -266,7 +266,7 @@ export default function ProductName({ params }: ProductNameProps) {
                   <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-2">
                     <RadioGroup.Label className="sr-only">Escolha um tamanho</RadioGroup.Label>
                     <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                      {productDetail?.itens.map((size) => (
+                      {productDetail?.itens?.map((size) => (
                         <RadioGroup.Option
                           key={size.tamanho}
                           value={size}
