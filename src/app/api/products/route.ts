@@ -1,11 +1,17 @@
+import { axiosClient } from "@/app/config/axios";
+import { NextResponse } from "next/server";
+
 export async function GET(){
-  const response = await fetch(`${process.env.API_URL}/produtos`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  
-  const products = await response.json();
-  return Response.json(products?.conteudo);
+  try {
+    const { data } = await axiosClient.get(`${process.env.API_URL}/produtos`);
+    return new NextResponse(JSON.stringify(data.conteudo), {
+      status: data.status || 200,
+      statusText: data.mensagem || 'Sucess',
+    });
+  }catch (err: any) {
+    return new NextResponse(JSON.stringify(err?.response?.data || err), {
+      status: err?.response?.status || 500,
+      statusText: err?.response?.data?.mensagem || 'Internal Server Error',
+    });
+  }
 }
