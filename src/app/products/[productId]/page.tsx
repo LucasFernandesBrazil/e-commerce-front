@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { CurrencyDollarIcon, GlobeAmericasIcon } from '@heroicons/react/24/outline'
-import { IImage, IProductDetail } from '@/interfaces/products.interface'
+import { IColor, IImage, IProductDetail, IProductItem } from '@/interfaces/products.interface'
 import { formatCurrency } from '@/utils/formatCurrency'
 import { addToCart } from '@/app/services/shoppingCart.service'
 import toastEmmiter from '@/utils/toastEmitter'
@@ -118,8 +118,8 @@ interface ProductNameProps {
 }
 
 export default function ProductName({ params }: ProductNameProps) {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0])
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2])
+  const [selectedColor, setSelectedColor] = useState<IColor>()
+  const [selectedItem, setSelectedItem] = useState<IProductItem>()
   const [productDetail, setProductDetail] = useState<IProductDetail>();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -132,9 +132,13 @@ export default function ProductName({ params }: ProductNameProps) {
             'Content-Type': 'application/json',
           },
         });
-        const productDetail = await responseProductDetail.json();
+        const productDetail = await responseProductDetail.json() as IProductDetail;
         
         setProductDetail(productDetail);
+
+        const firstItem = productDetail.itens[0]
+        setSelectedItem(firstItem)
+        setSelectedColor(firstItem.cores[0])
       } catch (error) {
         console.error("Error fetching productDetail:", error);
       }
@@ -143,9 +147,18 @@ export default function ProductName({ params }: ProductNameProps) {
     fetchProducts();
   }, [params.productId]);
 
+  function handleChangeSelectedItem(size: string) {
+    const item = productDetail?.itens.find(item => item.tamanho === size)
+    console.log("item", item)
+    setSelectedItem(item)
+    setSelectedColor(item?.cores[0])
+  }
+
   async function handleAddToCart() {
+    if (!selectedColor) return;
+
     setIsLoading(true);
-    const res = await addToCart(productDetail?.itens[1].cores[0].id || 0, 1);
+    const res = await addToCart(selectedColor.id, 1);
     const mensagens: string[] | null  = res?.mensagens;
     if (mensagens && mensagens.length > 0) {
       mensagens?.forEach(mensagem => {
@@ -228,13 +241,12 @@ export default function ProductName({ params }: ProductNameProps) {
                   <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-2">
                     <RadioGroup.Label className="sr-only">Escolha uma cor</RadioGroup.Label>
                     <div className="flex items-center space-x-3">
-                      {product.colors.map((color) => (
+                      {selectedItem?.cores.map((color) => (
                         <RadioGroup.Option
-                          key={color.name}
+                          key={color.nome}
                           value={color}
                           className={({ active, checked }) =>
                             classNames(
-                              color.selectedColor,
                               active && checked ? 'ring ring-offset-1' : '',
                               !active && checked ? 'ring-2' : '',
                               'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
@@ -242,12 +254,12 @@ export default function ProductName({ params }: ProductNameProps) {
                           }
                         >
                           <RadioGroup.Label as="span" className="sr-only">
-                            {color.name}
+                            {color.nome}
                           </RadioGroup.Label>
                           <span
                             aria-hidden="true"
+                            style={{ backgroundColor: `#${color.codigo}` }}
                             className={classNames(
-                              color.bgColor,
                               'h-8 w-8 rounded-full border border-black border-opacity-10'
                             )}
                           />
@@ -263,16 +275,16 @@ export default function ProductName({ params }: ProductNameProps) {
                     <h2 className="text-sm font-medium text-gray-900">Tamanho</h2>
                   </div>
 
-                  <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-2">
+                  <RadioGroup value={selectedItem?.tamanho} onChange={handleChangeSelectedItem} className="mt-2">
                     <RadioGroup.Label className="sr-only">Escolha um tamanho</RadioGroup.Label>
                     <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                      {productDetail?.itens?.map((size) => (
+                      {productDetail?.itens.map((item) => (
                         <RadioGroup.Option
-                          key={size.tamanho}
-                          value={size}
+                          key={item.tamanho}
+                          value={item.tamanho}
                           className={({ active, checked }) =>
                             classNames(
-                              size.estaDisponivel ? 'cursor-pointer focus:outline-none' : 'cursor-not-allowed opacity-25',
+                              item.estaDisponivel ? 'cursor-pointer focus:outline-none' : 'cursor-not-allowed opacity-25',
                               active ? 'ring-2 ring-sky-500 ring-offset-2' : '',
                               checked
                                 ? 'border-transparent bg-sky-600 text-white hover:bg-sky-700'
@@ -280,9 +292,9 @@ export default function ProductName({ params }: ProductNameProps) {
                               'flex items-center justify-center rounded-md border py-3 px-3 text-sm font-medium uppercase sm:flex-1'
                             )
                           }
-                          disabled={!size.estaDisponivel}
+                          disabled={!item.estaDisponivel}
                         >
-                          <RadioGroup.Label as="span">{size.tamanho}</RadioGroup.Label>
+                          <RadioGroup.Label as="span">{item.tamanho}</RadioGroup.Label>
                         </RadioGroup.Option>
                       ))}
                     </div>

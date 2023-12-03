@@ -13,6 +13,7 @@ interface ILoginResponseContent {
 }
 
 export const authOptions: AuthOptions = {
+  secret: "72@vXmjU*&#oLJQzE2Sm4WaAc7x55Jf4#GTzE^LySK7&7&FDx@gCSXR5%4zC43EEicWUGoVZLaHhkQfeGZL*GiLbHtJu*NxJL7R$oL3QD9ZzPgANs2eWqbgv4A9Caod$",
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -21,7 +22,8 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
-        const res = await fetch("http://localhost:5129/api/usuarios/login", {
+        console.log(`Fazendo login em ${process.env.API_URL}`)
+        const res = await fetch(`${process.env.API_URL}/usuarios/login`, {
           method: 'POST',
           body: JSON.stringify({
             email: credentials?.email,

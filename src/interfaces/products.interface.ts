@@ -45,7 +45,8 @@ export interface IColorCompact {
 }
 
 export interface IProductShipping {
-  id: number;
+  idItem: number;
+  idProduto: number;
   nome: string;
   precoTotal: number;
   precoUnitario: number;

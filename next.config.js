@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    domains: ['raw.githubusercontent.com', 'tailwindui.com'],
-  },
-}
+    output: 'standalone',
+    images: {
+        domains: ['raw.githubusercontent.com', 'tailwindui.com'],
+    },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

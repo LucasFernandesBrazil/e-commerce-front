@@ -32,8 +32,6 @@ export default function TrendingSection({ title = "Novidades" }: TrendingSection
     fetchProducts();
   }, []);
 
-  const firstFourProducts = products.slice(0, 4);
-
   return (
     <section aria-labelledby="trending-heading">
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:pt-32">
@@ -41,15 +39,15 @@ export default function TrendingSection({ title = "Novidades" }: TrendingSection
           <h2 id="favorites-heading" className="text-2xl font-bold tracking-tight text-gray-900">
             { title }
           </h2>
-          <a href="#" className="hidden text-sm font-medium text-sky-600 hover:text-sky-500 md:block">
+          {/* <a href="#" className="hidden text-sm font-medium text-sky-600 hover:text-sky-500 md:block">
             Veja mais produtos
             <span aria-hidden="true"> &rarr;</span>
-          </a>
+          </a> */}
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
-          {firstFourProducts.map((product) => (
-            <div key={product.id} className="group relative">
+          {products.map((product) => (
+            <div key={product.id} className="group relative mb-4">
               <div className="h-56 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:h-72 xl:h-80">
                 <Image
                   src={product.imagem}

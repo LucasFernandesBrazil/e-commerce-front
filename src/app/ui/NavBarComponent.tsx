@@ -372,7 +372,7 @@ export default function NavBarComponent() {
                   </Popover.Group>
                 </div>
 
-                {/* Mobile menu and Perquisar (lg-) */}
+                {/* Mobile menu and Pesquisar (lg-) */}
                 <div className="flex flex-1 items-center lg:hidden">
                   <button
                     type="button"
@@ -383,9 +383,9 @@ export default function NavBarComponent() {
                     <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                   </button>
 
-                  {/* Perquisar */}
+                  {/* Pesquisar */}
                   <a href="#" className="ml-2 p-2 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Perquisar</span>
+                    <span className="sr-only">Pesquisar</span>
                     <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
                   </a>
                 </div>
@@ -404,7 +404,7 @@ export default function NavBarComponent() {
 
                 <div className="flex flex-1 items-center justify-end">
                   <a href="#" className="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block">
-                    Perquisar
+                    Pesquisar
                   </a>
 
                   <div className="flex items-center lg:ml-8">
@@ -419,7 +419,7 @@ export default function NavBarComponent() {
 
                     {/* Cart */}
                     <div className="ml-4 flow-root lg:ml-8">
-                      <a href="shopping-cart" className="group -m-2 flex items-center p-2">
+                      <a href="/shopping-cart" className="group -m-2 flex items-center p-2">
                         <ShoppingBagIcon
                           className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                           aria-hidden="true"

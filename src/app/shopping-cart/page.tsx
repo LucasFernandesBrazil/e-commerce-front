@@ -91,7 +91,7 @@ export default function ShoppingCartPage() {
     deleteItem(idProductRemove);
     setIdProductRemove(undefined);
     toastEmmiter('Produto removido do carrinho', EToastType.SUCESS)
-    cart?.itens.splice(cart?.itens.findIndex(item => item.id === idProductRemove), 1)
+    cart?.itens.splice(cart?.itens.findIndex(item => item.idItem === idProductRemove), 1)
     setOpen(false);
   }
 
@@ -119,7 +119,7 @@ export default function ShoppingCartPage() {
 
             <ul role="list" className="divide-y divide-gray-200 border-b border-t border-gray-200">
               {cart?.itens.map((product, productIdx) => (
-                <li key={product.id} className="flex py-6 sm:py-10">
+                <li key={product.idItem} className="flex py-6 sm:py-10">
                   <div className="flex-shrink-0">
                     <Image
                       src={product.imagem}
@@ -135,7 +135,7 @@ export default function ShoppingCartPage() {
                       <div>
                         <div className="flex justify-between">
                           <h3 className="text-sm">
-                            <a href={`products/${product.id}`} className="font-medium text-gray-700 hover:text-gray-800">
+                            <a href={`products/${product.idProduto}`} className="font-medium text-gray-700 hover:text-gray-800">
                               {product.nome}
                             </a>
                           </h3>
@@ -156,7 +156,7 @@ export default function ShoppingCartPage() {
                         <select
                           id={`quantity-${productIdx}`}
                           name={`quantity-${productIdx}`}
-                          onChange={(value) => changeQuantity(value?.target?.value, product.id)}
+                          onChange={(value) => changeQuantity(value?.target?.value, product.idItem)}
                           defaultValue={product.quantidade}
                           className="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                         >
@@ -171,7 +171,7 @@ export default function ShoppingCartPage() {
                         </select>
 
                         <div className="absolute right-0 top-0">
-                          <button onClick={() => handleClickOpen(product.id)} type="button" className="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
+                          <button onClick={() => handleClickOpen(product.idItem)} type="button" className="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
                             <span className="sr-only">Remove</span>
                             <XMarkIconMini className="h-5 w-5" aria-hidden="true" />
                           </button>

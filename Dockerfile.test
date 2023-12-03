@@ -1,0 +1,11 @@
+FROM node:18 AS base
+WORKDIR /usr/src/app
+RUN touch base.txt
+
+FROM base as middle
+RUN touch middle.txt
+
+FROM base as final
+RUN touch final.txt
+
+CMD ["bash"]
