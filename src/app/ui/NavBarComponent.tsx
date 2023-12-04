@@ -13,6 +13,7 @@ import {
 import { getCartNumber } from '../services/shoppingCart.service'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import { useShoppingCartStore } from '@/app/stores/shoppingCartStore'
 
 const navigation = {
   categories: [
@@ -84,8 +85,10 @@ const navigation = {
 
 export default function NavBarComponent() {
   const [open, setOpen] = useState(false)
-  const [numberCart, setNumberCart] = useState([])
   const { data: session } = useSession()
+
+  const shoppingCartQuantity = useShoppingCartStore(state => state.quantity)
+  const setShoppingCartQuantity = useShoppingCartStore(state => state.setQuantity)
 
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -95,7 +98,7 @@ export default function NavBarComponent() {
     const fetchNumbercart = async () => {
       try {
         const numberCart = await getCartNumber()
-        if(!numberCart?.status) setNumberCart(numberCart)
+        if(!numberCart?.status) setShoppingCartQuantity(numberCart)
       } catch (error) {
         console.error("Error fetching productDetail:", error);
       }
@@ -424,7 +427,7 @@ export default function NavBarComponent() {
                           className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                           aria-hidden="true"
                         />
-                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{numberCart}</span>
+                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{shoppingCartQuantity}</span>
                         <span className="sr-only">items in cart, view bag</span>
                       </a>
                     </div>

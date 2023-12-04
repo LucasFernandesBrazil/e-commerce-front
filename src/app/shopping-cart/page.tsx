@@ -16,6 +16,7 @@ import toastEmmiter from '@/utils/toastEmitter'
 import { EToastType } from '@/interfaces/toast.interface'
 import Image from 'next/image'
 import { sendRequest } from '../services/requests.service'
+import { useShoppingCartStore } from '../stores/shoppingCartStore'
 
 const products = [
   {
@@ -58,6 +59,9 @@ export default function ShoppingCartPage() {
   const [open, setOpen] = useState(false);
   const [idProductRemove, setIdProductRemove] = useState<number>()
 
+  const decreaseShoppingCartQuantity = useShoppingCartStore(state => state.decreaseQuantity);
+  const changeShoppingCartItemQuantity = useShoppingCartStore(state => state.changeItemQuantity);
+
   useEffect(() => {
     fetchCart();
   }, [])
@@ -81,9 +85,11 @@ export default function ShoppingCartPage() {
     setIdProductRemove(undefined)
   };
 
-  async function changeQuantity(quantidade: string, id: number) {
-    await changeNumberItemCart(id, Number(quantidade));
+  async function changeQuantity(oldQuantity: number, newQuantity: number, id: number) {
+    await changeNumberItemCart(id, newQuantity);
     fetchCart();
+
+    changeShoppingCartItemQuantity(oldQuantity, newQuantity)
   }
 
   function deleteItemOfCart() {
@@ -91,8 +97,11 @@ export default function ShoppingCartPage() {
     deleteItem(idProductRemove);
     setIdProductRemove(undefined);
     toastEmmiter('Produto removido do carrinho', EToastType.SUCESS)
-    cart?.itens.splice(cart?.itens.findIndex(item => item.idItem === idProductRemove), 1)
+    const [item] = cart?.itens.splice(cart?.itens.findIndex(item => item.idItem === idProductRemove), 1) ?? [{ quantidade: 0 }]
+    fetchCart()
     setOpen(false);
+
+    decreaseShoppingCartQuantity(item.quantidade)
   }
 
   async function handleRequest() {
@@ -156,7 +165,7 @@ export default function ShoppingCartPage() {
                         <select
                           id={`quantity-${productIdx}`}
                           name={`quantity-${productIdx}`}
-                          onChange={(value) => changeQuantity(value?.target?.value, product.idItem)}
+                          onChange={(value) => changeQuantity(product.quantidade, Number(value?.target?.value), product.idItem)}
                           defaultValue={product.quantidade}
                           className="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                         >

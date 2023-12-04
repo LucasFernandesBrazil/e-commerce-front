@@ -9,6 +9,7 @@ import { addToCart } from '@/app/services/shoppingCart.service'
 import toastEmmiter from '@/utils/toastEmitter'
 import { EToastType } from '@/interfaces/toast.interface'
 import Image from 'next/image'
+import { useShoppingCartStore } from '@/app/stores/shoppingCartStore'
 
 const product = {
   name: 'Camisa básica',
@@ -123,6 +124,8 @@ export default function ProductName({ params }: ProductNameProps) {
   const [productDetail, setProductDetail] = useState<IProductDetail>();
   const [isLoading, setIsLoading] = useState(false);
 
+  const increaseShoppingCartQuantity = useShoppingCartStore(state => state.increaseQuantity)
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -155,6 +158,8 @@ export default function ProductName({ params }: ProductNameProps) {
   }
 
   async function handleAddToCart() {
+    const ADDED_ITEM_QUANTITY = 1;
+
     if (!selectedColor) return;
 
     setIsLoading(true);
@@ -167,6 +172,7 @@ export default function ProductName({ params }: ProductNameProps) {
     } else {
       toastEmmiter('Produto adicionado ao carrinho!', EToastType.SUCESS);
     }
+    increaseShoppingCartQuantity(ADDED_ITEM_QUANTITY)
     setIsLoading(false);
   }
 
