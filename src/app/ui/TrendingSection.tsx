@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 
 interface TrendingSectionProps {
   title?: string;
+  isCompact?: boolean;
 }
 
-export default function TrendingSection({ title = "Novidades" }: TrendingSectionProps) {
+export default function TrendingSection({ title = "Novidades", isCompact = false }: TrendingSectionProps) {
   const [products, setProducts] = useState<IProducts[]>([]);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export default function TrendingSection({ title = "Novidades" }: TrendingSection
         });
         const products = await responseProducts.json();
         
-        setProducts(products);
+        setProducts(isCompact ? products.slice(0, 4) : products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -46,7 +47,7 @@ export default function TrendingSection({ title = "Novidades" }: TrendingSection
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
-          {products.map((product) => (
+          {products?.map((product) => (
             <div key={product.id} className="group relative mb-4">
               <div className="h-56 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:h-72 xl:h-80">
                 <Image

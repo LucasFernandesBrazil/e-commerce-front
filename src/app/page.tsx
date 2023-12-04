@@ -10,7 +10,7 @@ export default function Home() {
       <main>
         <HeroSection />
 
-        <TrendingSection />
+        <TrendingSection isCompact={true} />
 
         <PerksSection />
       </main>

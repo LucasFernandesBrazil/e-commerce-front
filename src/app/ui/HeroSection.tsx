@@ -3,19 +3,19 @@ import Image from "next/image"
 const collections = [
   {
     name: "Mulheres",
-    href: '#',
+    href: '/products',
     imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-01.jpg',
     imageAlt: 'Woman wearing a comfortable cotton t-shirt.',
   },
   {
     name: "Homens",
-    href: '#',
+    href: '/products',
     imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-02.jpg',
     imageAlt: 'Man wearing a comfortable and casual cotton t-shirt.',
   },
   {
     name: 'Acessórios',
-    href: '#',
+    href: '/products',
     imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-03.jpg',
     imageAlt: 'Person sitting at a wooden desk with paper note organizer, pencil and tablet.',
   },
