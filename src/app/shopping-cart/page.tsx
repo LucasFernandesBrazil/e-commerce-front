@@ -61,6 +61,7 @@ export default function ShoppingCartPage() {
 
   const decreaseShoppingCartQuantity = useShoppingCartStore(state => state.decreaseQuantity);
   const changeShoppingCartItemQuantity = useShoppingCartStore(state => state.changeItemQuantity);
+  const setShoppingCartQuantity = useShoppingCartStore(state => state.setQuantity);
 
   useEffect(() => {
     fetchCart();
@@ -105,11 +106,15 @@ export default function ShoppingCartPage() {
   }
 
   async function handleRequest() {
+    const CLEAR_SHOPPING_CART_QUANTITY = 0;
+
     try{
       await sendRequest()
       fetchCart();
       setCart(undefined)
       toastEmmiter('Pedido realizado com sucesso', EToastType.SUCESS)
+
+      setShoppingCartQuantity(CLEAR_SHOPPING_CART_QUANTITY)
     } catch (error) {
       toastEmmiter('Erro ao realizar pedido', EToastType.ERROR)
     }
