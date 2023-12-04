@@ -421,7 +421,7 @@ export default function NavBarComponent() {
                     </a>
 
                     {/* Cart */}
-                    <div className="ml-4 flow-root lg:ml-8">
+                    {session && <div className="ml-4 flow-root lg:ml-8">
                       <a href="/shopping-cart" className="group -m-2 flex items-center p-2">
                         <ShoppingBagIcon
                           className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
@@ -430,7 +430,7 @@ export default function NavBarComponent() {
                         <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{shoppingCartQuantity}</span>
                         <span className="sr-only">items in cart, view bag</span>
                       </a>
-                    </div>
+                    </div>}
                   </div>
                 </div>
               </div>

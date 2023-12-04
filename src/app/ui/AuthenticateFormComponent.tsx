@@ -20,7 +20,7 @@ export default function AuthenticateFormComponent() {
       if(response?.error) {
         toastEmmiter("Credenciais inválidas.", EToastType.ERROR);
       } else {
-        router.push('/');
+        router.back();
       }
       setIsLoading(false);
     }).catch((e) => {
